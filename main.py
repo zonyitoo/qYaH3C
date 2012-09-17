@@ -11,9 +11,14 @@ import time
 
 import usermanager
 import eapauth
+import eapshow
+
+isLogoff = False
 
 class MainDialog(QDialog):
     showStatusSignal = pyqtSignal(str)
+    changeLoginButtonState = pyqtSignal(bool)
+    changeLogoffButtonState = pyqtSignal(bool)
     
     def __init__(self, parent=None):
         super(MainDialog, self).__init__(parent)
@@ -24,66 +29,127 @@ class MainDialog(QDialog):
         self.userName = mainDialogUi.userName
         self.password = mainDialogUi.password
         self.showStatus = mainDialogUi.showStatus
+        self.networkInterface = mainDialogUi.networkInterface
         
         self.buttonLogin = mainDialogUi.buttonLogin
         self.buttonLogoff = mainDialogUi.buttonLogoff
         self.buttonCancel = mainDialogUi.buttonCancel
+        
+        self.process = None
+        self.thread = None
+        
+        self.isLogined = False
 
-        exist_userlist = QStringList()
-        self.users_info = get_usersinfo()
+        self.exist_userNameList = QStringList()
+        um = usermanager.UserManager()
+        self.users_info = um.get_users_info()
         for i in range(len(self.users_info)):
-            exist_userlist.append(unicode(self.users_info[i][0]))
-        mainDialogUi.userName.addItems(exist_userlist)
+            self.exist_userNameList.append(unicode(self.users_info[i][0]))
+        mainDialogUi.userName.addItems(self.exist_userNameList)
+        
+        if len(self.users_info) != 0:
+            first_user = um.get_user_info(0)
+            self.password.setText(unicode(first_user[1]))
+            self.networkInterface.setText(unicode(first_user[2]))
         
         QtCore.QMetaType.type("QString")
         
-        self.showStatusSignal.connect(self.showStatus.append)
+        self.showStatusSignal.connect(self.onTextBrowserUpdate)
+        self.changeLoginButtonState.connect(self.onChangeLoginButtonState)
+        self.changeLogoffButtonState.connect(self.onChangeLogoffButtonState)
+        
         self.connect(self.buttonLogin, SIGNAL('clicked()'), self.onLoginClicked)
-        self.connect(self.userName, SIGNAL('editTextChanged(PyQt_PyObject)'), self.onEditTextChanged)
-        self.connect(self.userName, SIGNAL('currentIndexChanged(PyQt_PyObject)'), self.onCurrentIndexChanged)
+        self.connect(self.userName, SIGNAL('editTextChanged(QString)'), self.onEditTextChanged)
         self.connect(self.buttonCancel, SIGNAL('clicked()'), self.onCancelClicked)
         self.connect(self.buttonLogoff, SIGNAL('clicked()'), self.onLogoffClicked)
+        self.connect(self, SIGNAL('finished(int)'), self.onFinish)
         
-        self.isLogoff = True
-
+    def onChangeLoginButtonState(self, state):
+        self.buttonLogin.enabledChange(state)
+    def onChangeLogoffButtonState(self, state):
+        self.buttonLogoff.enabledChange(state)
+        
     def onLoginClicked(self):
-        print self.userName.currentIndex()
         um = usermanager.UserManager()
         user_info = um.get_user_info(self.userName.currentIndex())
         
-        yah3c = eapauth.EAPAuth(user_info, self.showStatusSignal)
+        eapShow = eapshow.EAPShow(self.showStatusSignal)
+        self.yah3c = eapauth.EAPAuth(user_info, eapShow)
+        self.yah3c.set_listener(MainListener())
         
-        sub_thread = threading.Thread(target=self.doLogin, args=(user_info, ))
-        sub_thread.start()
+        eapShow_noprompt = eapshow.EAPShow()
+        self.yah3c_noprompt = eapauth.EAPAuth(user_info, eapShow_noprompt)
+        self.yah3c_noprompt.set_listener(MainListener())
+        
+        self.thread = threading.Thread(target=self.doLogin)
+        self.thread.start()
         
     def onLogoffClicked(self):
-        print "cancel"
-        self.isLogoff = True
+        self.yah3c.send_logoff()
+        if self.process.is_alive():
+            self.process.terminate()
 
     def onEditTextChanged(self, text):
         print text
-
-    def onCurrentIndexChanged(self, index):
-        print index
+        index = self.exist_userNameList.indexOf(text)
+        
+        if index != -1:
+            um = usermanager.UserManager()
+            user_info = um.get_user_info(index)
+            self.password.setText(unicode(user_info[1]))
+            self.networkInterface.setText(unicode(user_info[2]))
+        else:
+            self.password.setText("")
+            self.networkInterface.setText("")
 
     def onCancelClicked(self):
         self.done(0)
     
-    def doLogin(self, user_info):
-		self.isLogoff = False
-		self.noprompt_yah3c = eapauth.EAPAuth(user_info, self.showStatusSignal, ui_prompt = False)
-		
-		while not self.isLogoff and self.noprompt_yah3c.serve_forever():
-			self.sub_process = multiprocessing.Process(target=self.noprompt_yah3c.serve_forever)
-			self.sub_process.start()
-			self.sub_process = multiprocessing.Process(target=self.noprompt_yah3c.serve_forever)
-			self.sub_process.start()
+    def onFinish(self, result):
+        if self.process and self.process.is_alive():
+            self.process.terminate()
+    
+    def doLogin(self):
+        self.yah3c.send_start()
+        
+        if not self.serve(self.yah3c): return
 
-def get_usersinfo():
-    login_info = []
-    um = usermanager.UserManager()
-    users_info = um.get_users_info()
-    return users_info
+        while not self.yah3c.has_sent_logoff:
+            self.process = multiprocessing.Process(target=self.serve, args=(self.yah3c_noprompt, ))
+            self.process.start()
+            self.process.join(1800)
+            if self.process.is_alive():
+                self.process.terminate()
+                
+    def serve(self, yah3c):
+        try:
+            while True:
+                eap_packet = yah3c.client.recv(1600)
+                # strip the ethernet_header and handle
+                
+                if yah3c.EAP_handler(eap_packet[14:]): break
+        except KeyboardInterrupt:
+            print 'Interrupted by user'
+            yah3c.send_logoff()
+        except socket.error, msg:
+            yah3c.show.message("Connection Error")
+            yah3c.listener.onFailed()
+            return False
+        return True
+                
+    def onTextBrowserUpdate(self, string):
+        self.showStatus.append(string)
+        self.showStatus.moveCursor(QTextCursor.End)
+        
+class MainListener(eapauth.EAPListener):
+    def onLoginSucceed(self):
+        print "MainListener onLoginSucceed"
+        
+    def onLogoffSucceed(self):
+        print "MainListener onLogoffSucceed"
+        pass
+    def onFailed(self):
+        pass
 
 def main():
     app = QApplication(sys.argv)
