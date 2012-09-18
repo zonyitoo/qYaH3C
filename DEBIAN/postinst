@@ -1,0 +1,9 @@
+#!/bin/sh
+dire="/usr/share/qYaH3C"
+
+mkdir -p $dire
+mv -f /application/*.py $dire/
+ln -s $dire/qYaH3C.py /usr/bin/qYaH3C
+
+cp -rf /application/qYaH3C.png /usr/share/pixmaps/
+cp -rf /application/qYaH3C.desktop /usr/share/applications/

@@ -91,20 +91,12 @@ class EAPAuth:
             chap.append(chr(ord(md5[i]) ^ ord(md5data[i])))
         resp = chr(len(chap)) + ''.join(chap) + self.login_info[0]
         eap_packet = self.ethernet_header + get_EAPOL(EAPOL_EAPPACKET, get_EAP(EAP_RESPONSE, packet_id, EAP_TYPE_MD5, resp))
-        try:
-            self.client.send(eap_packet)
-        except socket.error, msg:
-            print "Connection error!"
-            #exit(-1)
+        self.client.send(eap_packet)
 
     def send_response_h3c(self, packet_id):
         resp=chr(len(self.login_info[1]))+self.login_info[1]+self.login_info[0]
         eap_packet = self.ethernet_header + get_EAPOL(EAPOL_EAPPACKET, get_EAP(EAP_RESPONSE, packet_id, EAP_TYPE_H3C, resp))
-        try:
-            self.client.send(eap_packet)
-        except socket.error, msg:
-            print "Connection error!"
-            #exit(-1)
+        self.client.send(eap_packet)
 
     
 

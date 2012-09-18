@@ -1,0 +1,8 @@
+Package: qyah3c
+Version: 0.1
+Section: net
+Priority: optional
+Maintainer: zonyitoo <zonyitoo@gmail.com>
+Architecture: all
+Depends: python2.7, python-netifaces, python-qt4, gksu
+Description: YaH3C GUI Version

@@ -1,0 +1,8 @@
+#!/bin/sh
+
+dire="/usr/share/qYaH3C"
+
+rm -rf $dire/
+rm -f /usr/bin/qYaH3C
+rm -f /usr/share/pixmaps/gYaH3C.png
+rm -f /usr/share/applications/qYaH3C.desktop
