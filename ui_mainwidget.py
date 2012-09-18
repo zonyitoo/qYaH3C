@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mainwidget.ui'
 #
-# Created: Tue Sep 18 19:31:24 2012
+# Created: Tue Sep 18 21:16:02 2012
 #      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -28,9 +28,11 @@ class Ui_MainWidget(object):
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
         self.userName = QtGui.QComboBox(self.widget)
         self.userName.setEditable(True)
+        self.userName.setInsertPolicy(QtGui.QComboBox.NoInsert)
         self.userName.setObjectName(_fromUtf8("userName"))
         self.verticalLayout.addWidget(self.userName)
         self.password = QtGui.QLineEdit(self.widget)
+        self.password.setEchoMode(QtGui.QLineEdit.Password)
         self.password.setObjectName(_fromUtf8("password"))
         self.verticalLayout.addWidget(self.password)
         self.networkInterface = QtGui.QComboBox(self.widget)
@@ -50,6 +52,7 @@ class Ui_MainWidget(object):
         self.loginButton.setObjectName(_fromUtf8("loginButton"))
         self.verticalLayout_3.addWidget(self.loginButton)
         self.logoffButton = QtGui.QPushButton(self.widget1)
+        self.logoffButton.setEnabled(False)
         self.logoffButton.setObjectName(_fromUtf8("logoffButton"))
         self.verticalLayout_3.addWidget(self.logoffButton)
         spacerItem = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
