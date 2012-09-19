@@ -8,6 +8,7 @@ import threading
 import netifaces
 import socket
 import commands
+import pynotify
 
 class MainWidget(QWidget, ui_mainwidget.Ui_MainWidget):
     statusUpdateSignal = pyqtSignal(str)
@@ -51,6 +52,8 @@ class MainWidget(QWidget, ui_mainwidget.Ui_MainWidget):
         self.loginSucceedSignal.connect(self.onLoginSucceed)
         self.logoffSucceedSignal.connect(self.onLogoffSucceed)
         self.eapfailureSignal.connect(self.onEAPFailure)
+        
+        self.loginSucNotify = pynotify.Notification("qYaH3C", "登录成功", "/usr/share/qYaH3C/image/icon.png")
         
     def closeEvent(self, event):
         if self.hasLogin:
@@ -138,6 +141,7 @@ class MainWidget(QWidget, ui_mainwidget.Ui_MainWidget):
         self.display_prompt(commands.getoutput('dhcpcd eth0'))
         self.hide()
         self.trayIcon.show()
+        self.loginSucNotify.show()
     
     def onLogoffSucceed(self):
         self.logButton.setEnabled(True)
@@ -197,7 +201,7 @@ class MainWidget(QWidget, ui_mainwidget.Ui_MainWidget):
                     #self.invoke_plugins('after_auth_fail')
                     self.display_login_message(eap_packet[10:])
                     self.eapfailureSignal.emit()
-                    exit(-1)
+                    exit(1)
             elif code == EAP_RESPONSE:
                 self.display_prompt('Got Unknown EAP Response')
             elif code == EAP_REQUEST:

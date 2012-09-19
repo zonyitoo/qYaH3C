@@ -5,10 +5,13 @@ import sys
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from mainwidget import *
+import pynotify
 
 
 def main():
     app = QApplication(sys.argv)
+    
+    pynotify.init('qYaH3C')
     
     mainWidget = MainWidget()
     mainWidget.show()

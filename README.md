@@ -3,7 +3,7 @@
 
 ![截图](https://github.com/downloads/zonyitoo/qYaH3C/screenshot.png)
 
-**版本: 0.3**
+**版本: 0.4**
 
 ##测试环境：
 
@@ -45,7 +45,5 @@
 无
 
 ## TODO
-* 登录成功及失败Notify提示
-* 下线成功Notify提示
 * 断线自动重连
 * 开机启动连网
