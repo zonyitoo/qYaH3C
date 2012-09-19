@@ -78,6 +78,7 @@ class MainWidget(QWidget, ui_mainwidget.Ui_MainWidget):
             self.login_info = self.um.get_user_info(setindex)
             self.password.setText(unicode(self.login_info[1]))
             self.networkInterface.setCurrentIndex(self.phyiface_list.indexOf(self.login_info[2]))
+            self.userName.setCurrentIndex(setindex)
     
     def onSystrayClicked(self):
         self.show()
