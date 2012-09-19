@@ -17,6 +17,27 @@
 * python-notify
 * gksu
 
+## 安装
+* 安装DEB
+
+首先确保已安装好依赖包
+
+	sudo apt-get install python python-netifaces python-qt4 python-notify gksu
+
+从[此处](https://github.com/zonyitoo/qYaH3C/downloads)下载最新版本的DEB包，在Ubuntu下可双击安装，或执行以下命令：
+
+	sudo dpkg -i qyah3c_[VERSION]_all.deb
+
+在Gnome或Unity启动菜单中打开**qYaH3C**即可使用
+
+* 直接下载源码
+
+首先确保已安装好依赖包及git（见上），解开压缩包后进入`application`目录执行
+
+	sudo ./qYaH3C.py -style=gtk
+
+注：在Gnome环境中可为`-style=gtk`，其它桌面环境请自行修改。DEB版安装后可在`/usr/share/applications/qYaH3C.desktop`中修改Exec的值
+
 ## TODO
 * 登录成功及失败Notify提示
 * 下线成功Notify提示
