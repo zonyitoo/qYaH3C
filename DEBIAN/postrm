@@ -1,11 +1,8 @@
 #!/bin/sh
 
-$INSTALL_PATH="/usr/share/qYaH3C"
-$BIN_PATH="/usr/bin"
-$ICON_PATH="/usr/share/pixmaps"
-$APP_PATH="/usr/share/applications"
+dire="/usr/share/qYaH3C"
 
-rm -rf $INSTALL_PATH
-rm -f $BIN_PATH/qyah3c
-rm -f $APP_PATH/qYaH3C.desktop
-rm -f $ICON_PATH/qYaH3C.png
+rm -rf $dire
+rm -f /usr/bin/qyah3c
+rm -f /usr/share/applications/qYaH3C.desktop
+rm -f /usr/share/applications/qYaH3C.png
