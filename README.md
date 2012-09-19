@@ -1,6 +1,8 @@
 # qYaH3C
 带GUI界面的[YaH3C](https://github.com/humiaozuzu/YaH3C)实现，使用PyQt4编写
 
+![截图](https://github.com/downloads/zonyitoo/qYaH3C/screenshot.png)
+
 **版本: 0.2**
 
 ##测试环境：
