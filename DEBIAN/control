@@ -1,8 +1,8 @@
 Package: qyah3c
-Version: 0.2
+Version: 0.3
 Section: net
 Priority: optional
 Maintainer: zonyitoo <zonyitoo@gmail.com>
 Architecture: all
-Depends: python2.7, python-netifaces, python-qt4, gksu, python-notify
+Depends: python2.7, python-netifaces, python-qt4, gksu, python-notify, dhcpcd
 Description: YaH3C GUI Version

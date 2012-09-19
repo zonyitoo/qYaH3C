@@ -3,7 +3,7 @@
 
 ![截图](https://github.com/downloads/zonyitoo/qYaH3C/screenshot.png)
 
-**版本: 0.2**
+**版本: 0.3**
 
 ##测试环境：
 
@@ -18,13 +18,14 @@
 * python-qt4
 * python-notify
 * gksu
+* dhcpcd
 
 ## 安装
 * 安装DEB
 
 首先确保已安装好依赖包
 
-	sudo apt-get install python python-netifaces python-qt4 python-notify gksu
+	sudo apt-get install python python-netifaces python-qt4 python-notify gksu dhcpcd
 
 从[此处](https://github.com/zonyitoo/qYaH3C/downloads)下载最新版本的DEB包，在Ubuntu下可双击安装，或执行以下命令：
 
@@ -41,8 +42,7 @@
 注：在Gnome环境中可为`-style=gtk`，其它桌面环境请自行修改。DEB版安装后可在`/usr/share/applications/qYaH3C.desktop`中修改Exec的值
 
 ## 已知BUG
-* 待机恢复后程序报错
-* 进程无故自杀
+无
 
 ## TODO
 * 登录成功及失败Notify提示

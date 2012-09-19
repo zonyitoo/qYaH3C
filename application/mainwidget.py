@@ -7,6 +7,7 @@ from PyQt4.QtGui import *
 import threading
 import netifaces
 import socket
+import commands
 
 class MainWidget(QWidget, ui_mainwidget.Ui_MainWidget):
     statusUpdateSignal = pyqtSignal(str)
@@ -23,10 +24,11 @@ class MainWidget(QWidget, ui_mainwidget.Ui_MainWidget):
         
         self.yah3c = None
         self.login_info = None
+        self.thread = None
         self.status.hide()
         
         self.trayIcon = QSystemTrayIcon(QIcon("/usr/share/qYaH3C/image/systray.png"), self)
-        self.trayIcon.show()
+        #self.trayIcon.show()
         self.trayIcon.activated.connect(self.onSystrayClicked)
         
         headPixmap = QPixmap("/usr/share/qYaH3C/image/icon.png")
@@ -50,6 +52,14 @@ class MainWidget(QWidget, ui_mainwidget.Ui_MainWidget):
         self.logoffSucceedSignal.connect(self.onLogoffSucceed)
         self.eapfailureSignal.connect(self.onEAPFailure)
         
+    def closeEvent(self, event):
+        if self.hasLogin:
+            self.hide()
+            self.trayIcon.show()
+            event.ignore()
+        else:
+            event.accept()
+
     def setExistedUserInfo(self):
         self.exist_userlist.clear()
         users_info = self.um.get_users_info()
@@ -64,10 +74,8 @@ class MainWidget(QWidget, ui_mainwidget.Ui_MainWidget):
             self.networkInterface.setCurrentIndex(self.phyiface_list.indexOf(self.login_info[2]))
     
     def onSystrayClicked(self):
-        if self.isHidden():
-            self.show()
-        else:
-            self.hide()
+        self.show()
+        self.trayIcon.hide()
             
     def onEditTextChanged(self, string):
         print string
@@ -82,6 +90,8 @@ class MainWidget(QWidget, ui_mainwidget.Ui_MainWidget):
         if self.hasLogin:
             self.yah3c.send_logoff()
             self.logButton.setText(u"正在下线")
+            if self.thread and not self.thread.isAlive():
+                self.onEAPFailure()
         else:
             name = self.userName.currentText().simplified()
             password = self.password.text().simplified()
@@ -99,8 +109,8 @@ class MainWidget(QWidget, ui_mainwidget.Ui_MainWidget):
                 self.setExistedUserInfo()
                     
             self.yah3c = eapauth.EAPAuth(self.login_info)
-            thread = threading.Thread(target=self.serve_forever, args=(self.yah3c, ))
-            thread.start()
+            self.thread = threading.Thread(target=self.serve_forever, args=(self.yah3c, ))
+            self.thread.start()
             
             self.userName.setEnabled(False)
             self.password.setEnabled(False)
@@ -125,7 +135,9 @@ class MainWidget(QWidget, ui_mainwidget.Ui_MainWidget):
         self.logButton.setEnabled(True)
         self.hasLogin = True
         self.logButton.setText(u"下线")
+        self.display_prompt(commands.getoutput('dhcpcd eth0'))
         self.hide()
+        self.trayIcon.show()
     
     def onLogoffSucceed(self):
         self.logButton.setEnabled(True)
@@ -178,13 +190,14 @@ class MainWidget(QWidget, ui_mainwidget.Ui_MainWidget):
                     #self.invoke_plugins('after_logoff')
                     self.display_login_message(eap_packet[10:])
                     self.logoffSucceedSignal.emit()
+                    exit(1)
                 else:
                     self.display_prompt('Got EAP Failure')
                     # invoke plugins 
                     #self.invoke_plugins('after_auth_fail')
                     self.display_login_message(eap_packet[10:])
                     self.eapfailureSignal.emit()
-                exit(-1)
+                    exit(-1)
             elif code == EAP_RESPONSE:
                 self.display_prompt('Got Unknown EAP Response')
             elif code == EAP_REQUEST:
@@ -214,60 +227,24 @@ class MainWidget(QWidget, ui_mainwidget.Ui_MainWidget):
             self.display_prompt('Got unknown EAPOL type %i' % type)
         
     def serve_forever(self, yah3c):
-        retry_num = 3
-        while retry_num:
+        retry_num = 1
+        
+        while retry_num <= 3:
             try:
                 yah3c.send_start()
-                retry_num = 3
-                break
-            except socket.error, msg:
-                display_prompt("Connection error! retry %d" % retry_num)
-                retry_num -= 1
-            except KeyboardInterrupt:
-                display_prompt('Interrupted by user')
-                yah3c.send_logoff()
-                retry_num = 3
-                break
-        else:
-            yah3c.send_logoff()
-            display_prompt('Connection Closed')
-            exit(-1)
-        
-        eap_packet = None
-        while True:
-            while retry_num:
-                try:
+                while True:
                     eap_packet = yah3c.client.recv(1600)
-                    retry_num = 3
-                    break
-                except socket.error, msg:
-                    display_prompt("Connection error! retry %d" % retry_num)
-                    retry_num -= 1
-                except KeyboardInterrupt:
-                    display_prompt('Interrupted by user')
-                    yah3c.send_logoff()
-                    retry_num = 3
-                    break
-            else:
-                yah3c.send_logoff()
-                display_prompt('Connection Closed')
-                exit(-1)
-            
-            # strip the ethernet_header and handle
-            while retry_num:
-                try:
+                    # strip the ethernet_header and handle
                     self.EAP_handler(eap_packet[14:], yah3c)
-                    retry_num = 3
-                    break
-                except socket.error, msg:
-                    display_prompt("Connection error! retry %d" % retry_num)
-                    retry_num -= 1
-                except KeyboardInterrupt:
-                    display_prompt('Interrupted by user')
-                    yah3c.send_logoff()
-                    retry_num = 3
-                    break
-            else:
+                    retry_num = 1
+            except socket.error, msg:
+                self.display_prompt("Connection error! retry %d" % retry_num)
+                retry_num += 1
+            except KeyboardInterrupt:
+                self.display_prompt('Interrupted by user')
                 yah3c.send_logoff()
-                display_prompt('Connection Closed')
-                exit(-1)
+                exit(1)
+        else:
+            self.eapfailureSignal.emit()
+            self.display_prompt('Connection Closed')
+            exit(-1)
