@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mainwidget.ui'
 #
-# Created: Wed Sep 19 00:46:44 2012
+# Created: Wed Sep 19 10:05:25 2012
 #      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -77,8 +77,8 @@ class Ui_MainWidget(object):
         QtCore.QMetaObject.connectSlotsByName(MainWidget)
 
     def retranslateUi(self, MainWidget):
-        MainWidget.setWindowTitle(QtGui.QApplication.translate("MainWidget", "Form", None, QtGui.QApplication.UnicodeUTF8))
-        self.loginButton.setText(QtGui.QApplication.translate("MainWidget", "Login", None, QtGui.QApplication.UnicodeUTF8))
-        self.logoffButton.setText(QtGui.QApplication.translate("MainWidget", "Logoff", None, QtGui.QApplication.UnicodeUTF8))
-        self.expandButton.setText(QtGui.QApplication.translate("MainWidget", "Expand", None, QtGui.QApplication.UnicodeUTF8))
+        MainWidget.setWindowTitle(QtGui.QApplication.translate("MainWidget", "qYaH3C", None, QtGui.QApplication.UnicodeUTF8))
+        self.loginButton.setText(QtGui.QApplication.translate("MainWidget", "登录", None, QtGui.QApplication.UnicodeUTF8))
+        self.logoffButton.setText(QtGui.QApplication.translate("MainWidget", "下线", None, QtGui.QApplication.UnicodeUTF8))
+        self.expandButton.setText(QtGui.QApplication.translate("MainWidget", "详情", None, QtGui.QApplication.UnicodeUTF8))
 

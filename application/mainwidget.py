@@ -1,4 +1,4 @@
-
+# -*- coding:utf-8 -*-
 import ui_mainwidget
 import eapauth, usermanager
 from eappacket import *
@@ -22,6 +22,10 @@ class MainWidget(QWidget, ui_mainwidget.Ui_MainWidget):
         self.yah3c = None
         self.login_info = None
         self.status.hide()
+        
+        self.trayIcon = QSystemTrayIcon(QIcon("qYaH3C_systray.png"), self)
+        self.trayIcon.show()
+        self.trayIcon.activated.connect(self.onSystrayClicked)
         
         self.exist_userlist = QStringList()
         self.um = usermanager.UserManager()
@@ -54,6 +58,12 @@ class MainWidget(QWidget, ui_mainwidget.Ui_MainWidget):
             self.login_info = self.um.get_user_info(0)
             self.password.setText(unicode(self.login_info[1]))
             self.networkInterface.setCurrentIndex(self.phyiface_list.indexOf(self.login_info[2]))
+    
+    def onSystrayClicked(self):
+        if self.isHidden():
+            self.show()
+        else:
+            self.hide()
             
     def onEditTextChanged(self, string):
         print string
@@ -97,8 +107,10 @@ class MainWidget(QWidget, ui_mainwidget.Ui_MainWidget):
     def onExpandButtonClicked(self):
         if self.status.isHidden():
             self.status.show()
+            self.expandButton.setText(u"收起")
         else:
             self.status.hide()
+            self.expandButton.setText(u"详情")
         
     def onStateUpdate(self, text):
         self.status.append(text)
@@ -106,6 +118,7 @@ class MainWidget(QWidget, ui_mainwidget.Ui_MainWidget):
         
     def onLoginSucceed(self):
         self.logoffButton.setEnabled(True)
+        self.hide()
     
     def onLogoffSucceed(self):
         self.loginButton.setEnabled(True)

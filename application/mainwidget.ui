@@ -29,7 +29,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>qYaH3C</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <property name="sizeConstraint">
@@ -79,7 +79,7 @@
        <item>
         <widget class="QPushButton" name="loginButton">
          <property name="text">
-          <string>Login</string>
+          <string>登录</string>
          </property>
         </widget>
        </item>
@@ -89,14 +89,14 @@
           <bool>false</bool>
          </property>
          <property name="text">
-          <string>Logoff</string>
+          <string>下线</string>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QPushButton" name="expandButton">
          <property name="text">
-          <string>Expand</string>
+          <string>详情</string>
          </property>
         </widget>
        </item>
