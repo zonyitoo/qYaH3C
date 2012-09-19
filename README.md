@@ -54,6 +54,13 @@
 
 DEB版安装后可在`/usr/share/qYaH3C/qyah3c.py`中修改
 
+* Unity中不能显示系统托盘图标
+这是因为在Unity中默认是不显示托盘图标的，要显示出来需要先安装`dconf-tools`
+	
+	sudo apt-get install dconf-tools
+	
+然后打开`dconf-editor`，然后找到desktop > unity > panel，在systray-whitelist的值加入`'qyah3c'`即可
+
 ## 已知BUG
 * 无故程序崩溃
 
