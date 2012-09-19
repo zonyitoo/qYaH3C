@@ -40,6 +40,10 @@
 
 注：在Gnome环境中可为`-style=gtk`，其它桌面环境请自行修改。DEB版安装后可在`/usr/share/applications/qYaH3C.desktop`中修改Exec的值
 
+## 已知BUG
+* 待机恢复后程序报错
+* 进程无故自杀
+
 ## TODO
 * 登录成功及失败Notify提示
 * 下线成功Notify提示
