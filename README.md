@@ -35,11 +35,24 @@
 
 * 直接下载源码
 
-首先确保已安装好依赖包及git（见上），解开压缩包后进入`application`目录执行
+首先确保已安装好依赖包及git（见上），解开压缩包后进入目录执行
 
-	sudo ./qYaH3C.py
+	chmod +x install.sh
+	sudo ./install.sh
+	sudo qyah3c
 
-注：在Gnome环境中将自动使用GTK主题，其它桌面环境请自行修改`application/qYaH3C.py`中`app.setStyle(QStyleFactory.create("gtk"))`或者直接删掉这句。DEB版安装后可在`/usr/share/qYaH3C/qYaH3C.py`中修改
+卸载：进入目录执行
+
+	chmod +x uninstall.sh
+	sudo ./uninstall.sh
+
+注：将自动使用GTK主题，其它桌面环境请自行修改`application/qyah3c.py`中
+
+	app.setStyle(QStyleFactory.create("gtk"))
+
+或者直接删掉这句。
+
+DEB版安装后可在`/usr/share/qYaH3C/qyah3c.py`中修改
 
 ## 已知BUG
 * 无故程序崩溃
