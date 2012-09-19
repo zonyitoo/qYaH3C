@@ -19,13 +19,18 @@ class MainWidget(QWidget, ui_mainwidget.Ui_MainWidget):
 
         self.setupUi(self)
         
+        self.hasLogin = False
+        
         self.yah3c = None
         self.login_info = None
         self.status.hide()
         
-        self.trayIcon = QSystemTrayIcon(QIcon("qYaH3C_systray.png"), self)
+        self.trayIcon = QSystemTrayIcon(QIcon("/usr/share/qYaH3C/image/systray.png"), self)
         self.trayIcon.show()
         self.trayIcon.activated.connect(self.onSystrayClicked)
+        
+        headPixmap = QPixmap("/usr/share/qYaH3C/image/icon.png")
+        self.headImage.setPixmap(headPixmap)
         
         self.exist_userlist = QStringList()
         self.um = usermanager.UserManager()
@@ -38,8 +43,7 @@ class MainWidget(QWidget, ui_mainwidget.Ui_MainWidget):
         self.setExistedUserInfo()
             
         self.connect(self.userName, SIGNAL('editTextChanged(QString)'), self.onEditTextChanged)
-        self.connect(self.loginButton, SIGNAL('clicked()'), self.onLoginButtonClicked)
-        self.connect(self.logoffButton, SIGNAL('clicked()'), self.onLogoffButtonClicked)
+        self.connect(self.logButton, SIGNAL('clicked()'), self.onLogButtonClicked)
         self.connect(self.expandButton, SIGNAL('clicked()'), self.onExpandButtonClicked)
         self.statusUpdateSignal.connect(self.onStateUpdate)
         self.loginSucceedSignal.connect(self.onLoginSucceed)
@@ -74,35 +78,36 @@ class MainWidget(QWidget, ui_mainwidget.Ui_MainWidget):
         else:
             self.password.setText("")
             
-    def onLoginButtonClicked(self):
-        name = self.userName.currentText().simplified()
-        password = self.password.text().simplified()
-        iface = self.networkInterface.currentText().simplified()
-        
-        index = self.exist_userlist.indexOf(name)
-        if index != -1:
-            self.login_info = self.um.get_user_info(index)
-            if self.password.isModified() or iface != self.login_info[2]:
-                self.login_info = (login_info[0], password, iface)
-                self.um.update_user_info(self.login_info)
+    def onLogButtonClicked(self):
+        if self.hasLogin:
+            self.yah3c.send_logoff()
+            self.logButton.setText(u"正在下线")
         else:
-            self.login_info = (name, password, iface)
-            self.um.create_user(self.login_info)
-            self.setExistedUserInfo()
-                
-        self.yah3c = eapauth.EAPAuth(self.login_info)
-        thread = threading.Thread(target=self.serve_forever, args=(self.yah3c, ))
-        thread.start()
-        
-        self.loginButton.setEnabled(False)
-        self.userName.setEnabled(False)
-        self.password.setEnabled(False)
-        self.networkInterface.setEnabled(False)
-        
-    def onLogoffButtonClicked(self):
-        self.yah3c.send_logoff()
-        
-        self.logoffButton.setEnabled(False)
+            name = self.userName.currentText().simplified()
+            password = self.password.text().simplified()
+            iface = self.networkInterface.currentText().simplified()
+            
+            index = self.exist_userlist.indexOf(name)
+            if index != -1:
+                self.login_info = self.um.get_user_info(index)
+                if self.password.isModified() or iface != self.login_info[2]:
+                    self.login_info = (login_info[0], password, iface)
+                    self.um.update_user_info(self.login_info)
+            else:
+                self.login_info = (name, password, iface)
+                self.um.create_user(self.login_info)
+                self.setExistedUserInfo()
+                    
+            self.yah3c = eapauth.EAPAuth(self.login_info)
+            thread = threading.Thread(target=self.serve_forever, args=(self.yah3c, ))
+            thread.start()
+            
+            self.userName.setEnabled(False)
+            self.password.setEnabled(False)
+            self.networkInterface.setEnabled(False)
+            self.logButton.setText(u"正在登录")
+            
+        self.logButton.setEnabled(False)
         
     def onExpandButtonClicked(self):
         if self.status.isHidden():
@@ -117,14 +122,18 @@ class MainWidget(QWidget, ui_mainwidget.Ui_MainWidget):
         self.status.moveCursor(QTextCursor.End)
         
     def onLoginSucceed(self):
-        self.logoffButton.setEnabled(True)
+        self.logButton.setEnabled(True)
+        self.hasLogin = True
+        self.logButton.setText(u"下线")
         self.hide()
     
     def onLogoffSucceed(self):
-        self.loginButton.setEnabled(True)
+        self.logButton.setEnabled(True)
         self.userName.setEnabled(True)
         self.password.setEnabled(True)
         self.networkInterface.setEnabled(True)
+        self.hasLogin = False
+        self.logButton.setText(u"登录")
         
     def onEAPFailure(self):
         self.logoffButton.setEnabled(False)
@@ -132,9 +141,12 @@ class MainWidget(QWidget, ui_mainwidget.Ui_MainWidget):
         self.userName.setEnabled(True)
         self.password.setEnabled(True)
         self.networkInterface.setEnabled(True)
+        self.hasLogin = False
+        self.logButton.setEnable(True)
+        self.logButton.setText(u"登录")
         
     def display_prompt(self, string):
-        print string
+        #print string
         self.statusUpdateSignal.emit(string)
     
     def display_login_message(self, msg):
@@ -145,10 +157,10 @@ class MainWidget(QWidget, ui_mainwidget.Ui_MainWidget):
         """
         try:
             decoded = msg.decode('gbk')
-            print decoded
+            #print decoded
             self.statusUpdateSignal.emit(decoded)
         except UnicodeDecodeError:
-            print msg
+            #print msg
             self.statusUpdateSignal.emit(msg)
         
     def EAP_handler(self, eap_packet, yah3c):

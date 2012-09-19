@@ -3,6 +3,6 @@
 dire="/usr/share/qYaH3C"
 
 rm -rf $dire/
-rm -f /usr/bin/qYaH3C
-rm -f /usr/share/pixmaps/gYaH3C.png
+rm -f /usr/bin/qyah3c
 rm -f /usr/share/applications/qYaH3C.desktop
+rm -f /usr/share/pixmaps/qYaH3C.png
