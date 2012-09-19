@@ -39,10 +39,10 @@
 
 	sudo ./qYaH3C.py
 
-注：在Gnome环境中将自动使用GTK主题，其它桌面环境请自行修改`application/qYaH3C.py`中`app.setStyle(QStyleFactory.create("gtk"))`或者直接删掉这句。DEB版安装后可在`/usr/share/applications/qYaH3C.desktop`中修改Exec的值
+注：在Gnome环境中将自动使用GTK主题，其它桌面环境请自行修改`application/qYaH3C.py`中`app.setStyle(QStyleFactory.create("gtk"))`或者直接删掉这句。DEB版安装后可在`/usr/share/qYaH3C/qYaH3C.py`中修改
 
 ## 已知BUG
-无
+* 无故程序崩溃
 
 ## TODO
 * 断线自动重连
