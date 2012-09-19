@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mainwidget.ui'
 #
-# Created: Wed Sep 19 22:31:23 2012
+# Created: Thu Sep 20 00:52:03 2012
 #      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -82,6 +82,13 @@ class Ui_MainWidget(object):
         self.expandButton.setMinimumSize(QtCore.QSize(240, 0))
         self.expandButton.setObjectName(_fromUtf8("expandButton"))
         self.verticalLayout_2.addWidget(self.expandButton)
+        self.author = QtGui.QLabel(MainWidget)
+        font = QtGui.QFont()
+        font.setPointSize(6)
+        self.author.setFont(font)
+        self.author.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.author.setObjectName(_fromUtf8("author"))
+        self.verticalLayout_2.addWidget(self.author)
 
         self.retranslateUi(MainWidget)
         QtCore.QMetaObject.connectSlotsByName(MainWidget)
@@ -91,4 +98,5 @@ class Ui_MainWidget(object):
         self.password.setPlaceholderText(QtGui.QApplication.translate("MainWidget", "密码", None, QtGui.QApplication.UnicodeUTF8))
         self.logButton.setText(QtGui.QApplication.translate("MainWidget", "登录", None, QtGui.QApplication.UnicodeUTF8))
         self.expandButton.setText(QtGui.QApplication.translate("MainWidget", "详情", None, QtGui.QApplication.UnicodeUTF8))
+        self.author.setText(QtGui.QApplication.translate("MainWidget", "By Zonyitoo", None, QtGui.QApplication.UnicodeUTF8))
 

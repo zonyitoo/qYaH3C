@@ -3,7 +3,7 @@
 
 ![截图](https://github.com/downloads/zonyitoo/qYaH3C/screenshot.png)
 
-**版本: 0.5.1**
+**版本: 0.5.2**
 
 ##测试环境：
 
