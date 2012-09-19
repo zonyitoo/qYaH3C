@@ -1,9 +1,9 @@
 #!/bin/sh
 
-$INSTALL_PATH="/usr/share/qYaH3C"
-$BIN_PATH="/usr/bin"
-$ICON_PATH="/usr/share/pixmaps"
-$APP_PATH="/usr/share/applications"
+INSTALL_PATH="/usr/share/qYaH3C"
+BIN_PATH="/usr/bin"
+ICON_PATH="/usr/share/pixmaps"
+APP_PATH="/usr/share/applications"
 
 rm -rf $INSTALL_PATH
 rm -f $BIN_PATH/qyah3c
