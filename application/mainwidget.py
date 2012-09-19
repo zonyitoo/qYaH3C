@@ -136,8 +136,6 @@ class MainWidget(QWidget, ui_mainwidget.Ui_MainWidget):
         self.logButton.setText(u"登录")
         
     def onEAPFailure(self):
-        self.logoffButton.setEnabled(False)
-        self.loginButton.setEnabled(True)
         self.userName.setEnabled(True)
         self.password.setEnabled(True)
         self.networkInterface.setEnabled(True)
