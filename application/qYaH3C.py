@@ -10,6 +10,7 @@ import pynotify
 
 def main():
     app = QApplication(sys.argv)
+    app.setStyle(QStyleFactory.create("gtk"))
     
     pynotify.init('qYaH3C')
     
