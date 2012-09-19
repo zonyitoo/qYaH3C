@@ -28,6 +28,9 @@ class MainWidget(QWidget, ui_mainwidget.Ui_MainWidget):
         self.thread = None
         self.status.hide()
         
+        self.editedName = None
+        self.userName.lineEdit().setPlaceholderText(u"用户名")
+        
         self.trayIcon = QSystemTrayIcon(QIcon("/usr/share/qYaH3C/image/systray.png"), self)
         #self.trayIcon.show()
         self.trayIcon.activated.connect(self.onSystrayClicked)
@@ -43,7 +46,7 @@ class MainWidget(QWidget, ui_mainwidget.Ui_MainWidget):
             self.phyiface_list.append(unicode(iface))
         self.networkInterface.addItems(self.phyiface_list)
         
-        self.setExistedUserInfo()
+        self.setExistedUserInfo(0)
             
         self.connect(self.userName, SIGNAL('editTextChanged(QString)'), self.onEditTextChanged)
         self.connect(self.logButton, SIGNAL('clicked()'), self.onLogButtonClicked)
@@ -63,7 +66,7 @@ class MainWidget(QWidget, ui_mainwidget.Ui_MainWidget):
         else:
             event.accept()
 
-    def setExistedUserInfo(self):
+    def setExistedUserInfo(self, setindex):
         self.exist_userlist.clear()
         users_info = self.um.get_users_info()
         for i in range(len(users_info)):
@@ -72,7 +75,7 @@ class MainWidget(QWidget, ui_mainwidget.Ui_MainWidget):
         self.userName.addItems(self.exist_userlist)
         
         if len(users_info) != 0:
-            self.login_info = self.um.get_user_info(0)
+            self.login_info = self.um.get_user_info(setindex)
             self.password.setText(unicode(self.login_info[1]))
             self.networkInterface.setCurrentIndex(self.phyiface_list.indexOf(self.login_info[2]))
     
@@ -81,7 +84,8 @@ class MainWidget(QWidget, ui_mainwidget.Ui_MainWidget):
         self.trayIcon.hide()
             
     def onEditTextChanged(self, string):
-        print string
+        self.editedName = string
+        
         index = self.exist_userlist.indexOf(string)
         if index != -1:
             user_info = self.um.get_user_info(index)
@@ -96,21 +100,29 @@ class MainWidget(QWidget, ui_mainwidget.Ui_MainWidget):
             if self.thread and not self.thread.isAlive():
                 self.onEAPFailure()
         else:
-            name = self.userName.currentText().simplified()
-            password = self.password.text().simplified()
-            iface = self.networkInterface.currentText().simplified()
+            name = None
+            if (self.userName.lineEdit().isModified()):
+                name = self.editedName
+            else:
+                name = self.userName.currentText().simplified()
+            
+            password = str(self.password.text().simplified())
+            iface = str(self.networkInterface.currentText())
+            
+            if not name or not password:
+                return
             
             index = self.exist_userlist.indexOf(name)
             if index != -1:
                 self.login_info = self.um.get_user_info(index)
                 if self.password.isModified() or iface != self.login_info[2]:
-                    self.login_info = (login_info[0], password, iface)
+                    self.login_info = (self.login_info[0], password, iface)
                     self.um.update_user_info(self.login_info)
             else:
-                self.login_info = (name, password, iface)
+                self.login_info = (str(name), password, iface)
                 self.um.create_user(self.login_info)
-                self.setExistedUserInfo()
-                    
+                self.setExistedUserInfo(len(self.exist_userlist))
+            
             self.yah3c = eapauth.EAPAuth(self.login_info)
             self.thread = threading.Thread(target=self.serve_forever, args=(self.yah3c, ))
             self.thread.start()
@@ -156,7 +168,7 @@ class MainWidget(QWidget, ui_mainwidget.Ui_MainWidget):
         self.password.setEnabled(True)
         self.networkInterface.setEnabled(True)
         self.hasLogin = False
-        self.logButton.setEnable(True)
+        self.logButton.setEnabled(True)
         self.logButton.setText(u"登录")
         
     def display_prompt(self, string):

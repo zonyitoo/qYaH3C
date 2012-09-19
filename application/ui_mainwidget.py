@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mainwidget.ui'
 #
-# Created: Wed Sep 19 13:52:56 2012
+# Created: Wed Sep 19 22:31:23 2012
 #      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -46,6 +46,7 @@ class Ui_MainWidget(object):
         sizePolicy.setHeightForWidth(self.userName.sizePolicy().hasHeightForWidth())
         self.userName.setSizePolicy(sizePolicy)
         self.userName.setMinimumSize(QtCore.QSize(240, 0))
+        self.userName.setToolTip(_fromUtf8(""))
         self.userName.setEditable(True)
         self.userName.setInsertPolicy(QtGui.QComboBox.NoInsert)
         self.userName.setObjectName(_fromUtf8("userName"))
@@ -87,6 +88,7 @@ class Ui_MainWidget(object):
 
     def retranslateUi(self, MainWidget):
         MainWidget.setWindowTitle(QtGui.QApplication.translate("MainWidget", "qYaH3C", None, QtGui.QApplication.UnicodeUTF8))
+        self.password.setPlaceholderText(QtGui.QApplication.translate("MainWidget", "密码", None, QtGui.QApplication.UnicodeUTF8))
         self.logButton.setText(QtGui.QApplication.translate("MainWidget", "登录", None, QtGui.QApplication.UnicodeUTF8))
         self.expandButton.setText(QtGui.QApplication.translate("MainWidget", "详情", None, QtGui.QApplication.UnicodeUTF8))
 
