@@ -64,6 +64,7 @@ DEB版安装后可在`/usr/share/qYaH3C/qyah3c.py`中修改
 然后打开`dconf-editor`，然后找到desktop > unity > panel，在systray-whitelist的值加入`'qyah3c'`即可
 
 * 打包
+
 下载源码后直接进入目录运行`mkpkg.sh`即可生成，依赖：dpkg
 
 ## 已知BUG
