@@ -34,9 +34,13 @@
 
 在Gnome或Unity启动菜单中打开**qYaH3C**即可使用
 
+* Archlinux[安装包](https://github.com/zonyitoo/qYaH3C/downloads)
+
 * 直接下载源码
 
-首先确保已安装好依赖包及git（见上），解开压缩包后进入目录执行
+可以从[这里](https://github.com/zonyitoo/qYaH3C/downloads)下载`qyah3c-[VERSION]-all.tar.gz`包
+
+GIT：首先确保已安装好依赖包及git（见上），解开压缩包后进入目录执行
 
 	chmod +x install.sh
 	sudo ./install.sh
