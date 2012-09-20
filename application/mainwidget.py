@@ -4,11 +4,7 @@ import eapauth, usermanager
 from eappacket import *
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
-import threading
-import netifaces
-import socket
-import commands
-import pynotify
+import threading, netifaces, socket, commands, pynotify, time
 
 class MainWidget(QWidget, ui_mainwidget.Ui_MainWidget):
     statusUpdateSignal = pyqtSignal(str)
@@ -213,8 +209,11 @@ class MainWidget(QWidget, ui_mainwidget.Ui_MainWidget):
                     # invoke plugins 
                     #self.invoke_plugins('after_auth_fail')
                     self.display_login_message(eap_packet[10:])
-                    self.eapfailureSignal.emit()
-                    exit(1)
+                    if self.hasLogin:
+                        raise socket.error()
+                    else:
+                        self.eapfailureSignal.emit()
+                        exit(1)
             elif code == EAP_RESPONSE:
                 self.display_prompt('Got Unknown EAP Response')
             elif code == EAP_REQUEST:
@@ -246,7 +245,7 @@ class MainWidget(QWidget, ui_mainwidget.Ui_MainWidget):
     def serve_forever(self, yah3c):
         retry_num = 1
         
-        while retry_num <= 3:
+        while retry_num <= 8:
             try:
                 yah3c.send_start()
                 while True:
@@ -256,6 +255,7 @@ class MainWidget(QWidget, ui_mainwidget.Ui_MainWidget):
                     retry_num = 1
             except socket.error, msg:
                 self.display_prompt("Connection error! retry %d" % retry_num)
+                time.sleep(retry_num * 2)
                 retry_num += 1
             except KeyboardInterrupt:
                 self.display_prompt('Interrupted by user')
