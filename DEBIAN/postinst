@@ -1,12 +1,6 @@
 #!/bin/sh
 
-INSTALL_PATH="/usr/share/qYaH3C"
-ICON_PATH="/usr/share/pixmaps"
-APP_PATH="/usr/share/applications"
-BIN_PATH="/usr/bin"
+BIN_PATH='/usr/bin'
+SRC_PATH='/usr/share/qYaH3C'
 
-mkdir -p $INSTALL_PATH
-cp -rf /application/* $INSTALL_PATH
-ln -s $INSTALL_PATH/qyah3c.py $BIN_PATH/qyah3c
-cp -f /qYaH3C.desktop $APP_PATH
-cp -f /application/image/icon.png $ICON_PATH/qYaH3C.png
+ln -s $SRC_PATH/qyah3c.py $BIN_PATH/qyah3c

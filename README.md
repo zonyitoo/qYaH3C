@@ -47,7 +47,7 @@
 	chmod +x uninstall.sh
 	sudo ./uninstall.sh
 
-注：将自动使用GTK主题，其它桌面环境请自行修改`application/qyah3c.py`中
+注：将自动使用GTK主题，其它桌面环境请自行修改`src/qyah3c.py`中
 
 	app.setStyle(QStyleFactory.create("gtk"))
 
@@ -62,6 +62,9 @@ DEB版安装后可在`/usr/share/qYaH3C/qyah3c.py`中修改
 	sudo apt-get install dconf-tools
 	
 然后打开`dconf-editor`，然后找到desktop > unity > panel，在systray-whitelist的值加入`'qyah3c'`即可
+
+* 打包
+下载源码后直接进入目录运行`mkpkg.sh`即可生成，依赖：dpkg
 
 ## 已知BUG
 * 无故程序崩溃
