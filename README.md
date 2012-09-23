@@ -90,7 +90,7 @@ sudo apt-get install dconf-tools
 
 如果使用的是终端登录，那么可以安装`dhcpcd`工具来获取IP地址。
 
-* 打包DEB
+## 打包DEB
 
 下载源码后直接进入目录运行`mkpkg.sh`即可生成，依赖：dpkg
 
