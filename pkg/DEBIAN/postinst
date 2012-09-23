@@ -1,0 +1,6 @@
+#!/bin/sh
+
+BIN_PATH='/usr/bin'
+SRC_PATH='/usr/share/qYaH3C'
+
+ln -s $SRC_PATH/qyah3c.py $BIN_PATH/qyah3c

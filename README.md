@@ -90,6 +90,10 @@ sudo apt-get install dconf-tools
 
 如果使用的是终端登录，那么可以安装`dhcpcd`工具来获取IP地址。
 
+* Q: 为什么认证成功之后详情里一直在重复显示“Got EAP Request for identity”之类的信息？
+
+这是因为认证协议中要求在认证成功之后，客户端要和服务器要保持联系。
+
 ## 打包DEB
 
 下载源码后直接进入目录运行`mkpkg.sh`即可生成，依赖：dpkg
