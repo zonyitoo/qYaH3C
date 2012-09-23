@@ -23,15 +23,15 @@
 首先确保已安装好依赖包
 
 ``` bash
-	## Ubuntu/Debian
-	sudo apt-get install python python-netifaces python-qt4 python-notify gksu dhcpcd
+## Ubuntu/Debian
+sudo apt-get install python python-netifaces python-qt4 python-notify gksu dhcpcd
 ```
 
 * Ubuntu下安装DEB包
 从[此处](https://github.com/zonyitoo/qYaH3C/downloads)下载最新版本的DEB包，在Ubuntu下可**双击安装**，或执行以下命令：
 
 ``` bash
-	sudo dpkg -i qyah3c_[VERSION]_all.deb
+sudo dpkg -i qyah3c_[VERSION]_all.deb
 ```
 
 在Gnome或Unity启动菜单中打开**qYaH3C**，或在终端执行`sudo qyah3c`即可使用
@@ -47,22 +47,22 @@
 首先确保已安装好依赖包及git（见上），解开压缩包后进入目录执行
 
 ``` bash
-	chmod +x install.sh
-	sudo ./install.sh
-	sudo qyah3c
+chmod +x install.sh
+sudo ./install.sh
+sudo qyah3c
 ```
 
 卸载：进入目录执行
 
 ``` bash
-	chmod +x uninstall.sh
-	sudo ./uninstall.sh
+chmod +x uninstall.sh
+sudo ./uninstall.sh
 ```
 
 注：将自动使用GTK主题(在Gnome运行正常)，其它桌面环境请自行修改或删掉`src/qyah3c.py`中
 
 ``` python
-	app.setStyle(QStyleFactory.create("gtk"))
+app.setStyle(QStyleFactory.create("gtk"))
 ```
 
 安装后可在`/usr/share/qYaH3C/qyah3c.py`中修改
@@ -70,10 +70,10 @@
 ## Q & A
 * Q: Unity(Ubuntu)中不能显示系统托盘图标
 
-A: 这是因为在Unity中默认是不显示托盘图标的，要显示出来需要先安装`dconf-tools`
+这是因为在Unity中默认是不显示托盘图标的，要显示出来需要先安装`dconf-tools`
 
 ``` bash
-	sudo apt-get install dconf-tools
+sudo apt-get install dconf-tools
 ```
 
 然后打开`dconf-editor`，然后找到desktop > unity > panel，在systray-whitelist的值加入`'qyah3c'`即可
