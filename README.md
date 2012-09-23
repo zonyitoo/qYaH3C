@@ -1,8 +1,7 @@
 # qYaH3C
 带GUI界面的[YaH3C](https://github.com/humiaozuzu/YaH3C)实现，使用PyQt4编写
 
-**版本: 0.6.1**
-待机自动重连BUG解决
+**版本: 0.6.1** 更新YaH3C内核
 
 ##测试环境：
 
@@ -33,7 +32,7 @@
 
 ``` bash
 	sudo dpkg -i qyah3c_[VERSION]_all.deb
-``` bash
+```
 
 在Gnome或Unity启动菜单中打开**qYaH3C**，或在终端执行`sudo qyah3c`即可使用
 
@@ -51,20 +50,20 @@
 	chmod +x install.sh
 	sudo ./install.sh
 	sudo qyah3c
-``` bash
+```
 
 卸载：进入目录执行
 
 ``` bash
 	chmod +x uninstall.sh
 	sudo ./uninstall.sh
-``` bash
+```
 
 注：将自动使用GTK主题(在Gnome运行正常)，其它桌面环境请自行修改或删掉`src/qyah3c.py`中
 
 ``` python
 	app.setStyle(QStyleFactory.create("gtk"))
-``` python
+```
 
 安装后可在`/usr/share/qYaH3C/qyah3c.py`中修改
 
@@ -75,7 +74,7 @@ A: 这是因为在Unity中默认是不显示托盘图标的，要显示出来需
 
 ``` bash
 	sudo apt-get install dconf-tools
-``` bash
+```
 
 然后打开`dconf-editor`，然后找到desktop > unity > panel，在systray-whitelist的值加入`'qyah3c'`即可
 
