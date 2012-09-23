@@ -4,7 +4,7 @@ import eapauth, usermanager
 from eappacket import *
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
-import threading, netifaces, socket, commands, pynotify, time
+import threading, netifaces, socket, pynotify, time
 
 class MainWidget(QWidget, ui_mainwidget.Ui_MainWidget):
     statusUpdateSignal = pyqtSignal(str)
@@ -147,7 +147,6 @@ class MainWidget(QWidget, ui_mainwidget.Ui_MainWidget):
         self.logButton.setEnabled(True)
         self.hasLogin = True
         self.logButton.setText(u"下线")
-        self.display_prompt(commands.getoutput('dhcpcd eth0'))
         self.hide()
         self.trayIcon.show()
         self.loginSucNotify.show()

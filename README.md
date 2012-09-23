@@ -3,7 +3,7 @@
 
 ![截图](https://github.com/downloads/zonyitoo/qYaH3C/screenshot.png)
 
-**版本: 0.5.3**
+**版本: 0.5.4**
 待机自动重连BUG解决
 
 ##测试环境：
