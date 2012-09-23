@@ -16,7 +16,6 @@
 * python-qt4
 * python-notify
 * gksu
-* dhcpcd
 
 ## 安装
 
@@ -77,6 +76,17 @@ sudo apt-get install dconf-tools
 ```
 
 然后打开`dconf-editor`，然后找到desktop > unity > panel，在systray-whitelist的值加入`'qyah3c'`即可
+
+* Q: 怎么才算是已经成功登录？
+
+如果软件的“登录”按钮变成了“下线”，那就代表已经登录成功了。同时，在详情里面会显示“Got EAP Succeed”
+
+* Q: 为什么登录了之后还是上不了网？
+
+登录成功之后需要手动刷新IP地址，如果你用的是图形界面，那么可以使用图形界面中的网络管理器(NetworkManager)来刷新IP地址。
+如Ubuntu里面，点开右上角的连接图标，单击“有线连接(Wired Connection)”然后它就会自动重新获取IP地址，等获取成功之后就能上网了。
+
+如果使用的是终端登录，那么可以安装`dhcpcd`工具来获取IP地址。
 
 * 打包DEB
 

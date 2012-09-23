@@ -14,4 +14,4 @@ cp -rf ./src/image/ ./pkg/$SRC_PATH/
 cp -f ./src/image/icon.png ./pkg/$ICON_PATH/qYaH3C.png
 cp -f ./src/qYaH3C.desktop ./pkg/$APP_PATH/
 
-dpkg -b ./pkg qyah3c_0.5.4_all.deb
+dpkg -b ./pkg qyah3c_0.6.1_all.deb
