@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>260</width>
-    <height>535</height>
+    <height>541</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -134,6 +134,12 @@
      </property>
      <property name="text">
       <string>登录</string>
+     </property>
+     <property name="autoDefault">
+      <bool>true</bool>
+     </property>
+     <property name="default">
+      <bool>true</bool>
      </property>
     </widget>
    </item>

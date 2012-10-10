@@ -5,6 +5,7 @@ ICON_PATH='usr/share/pixmaps'
 SRC_PATH='usr/share/qYaH3C'
 
 rm -rf ./pkg/
+rm -rf ./*.deb
 mkdir -p ./pkg/$APP_PATH
 mkdir -p ./pkg/$ICON_PATH
 mkdir -p ./pkg/$SRC_PATH

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mainwidget.ui'
 #
-# Created: Thu Sep 20 00:52:03 2012
+# Created: Wed Oct 10 09:59:37 2012
 #      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -17,7 +17,7 @@ except AttributeError:
 class Ui_MainWidget(object):
     def setupUi(self, MainWidget):
         MainWidget.setObjectName(_fromUtf8("MainWidget"))
-        MainWidget.resize(260, 535)
+        MainWidget.resize(260, 541)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Ignored, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -68,6 +68,8 @@ class Ui_MainWidget(object):
         self.verticalLayout_2.addLayout(self.verticalLayout)
         self.logButton = QtGui.QPushButton(MainWidget)
         self.logButton.setMinimumSize(QtCore.QSize(240, 0))
+        self.logButton.setAutoDefault(True)
+        self.logButton.setDefault(True)
         self.logButton.setObjectName(_fromUtf8("logButton"))
         self.verticalLayout_2.addWidget(self.logButton)
         self.status = QtGui.QTextBrowser(MainWidget)
